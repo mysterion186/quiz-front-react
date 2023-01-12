@@ -9,10 +9,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image : url(./assets/training-duo-cordes.jpg); 
+  background-color: rgb(40, 38, 38);
+  color: white;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
+
+@media (min-width: 768px) { 
+  body {
+    background-image : url(./assets/training-duo-cordes.jpg); 
+  }
+ }

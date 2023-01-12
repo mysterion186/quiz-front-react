@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import HomePage from './views/front/HomePage';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -9,8 +9,8 @@ import {
 
 const router = createBrowserRouter([
   {
-    path: "/accueil",
-    element: <App />,
+    path: "/",
+    element: <HomePage />,
     children: [
       {
         path: "yo",

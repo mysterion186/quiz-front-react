@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import SaveName from './components/SaveName';
+import ScoreTable from './components/ScoreTable';
 import HomePage from './views/front/HomePage';
 import {
   createBrowserRouter,
@@ -13,8 +15,12 @@ const router = createBrowserRouter([
     element: <HomePage />,
     children: [
       {
-        path: "yo",
-        element: <h1><br /><br /><br /><br /> Page admin 2 </h1>,
+        path: "",
+        element: <ScoreTable />
+      },
+      {
+        path: "save-name",
+        element: <SaveName />
       },
     ],
   },
@@ -22,6 +28,10 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <h1>Page admin</h1>
   },
+  {
+    path : "/quiz",
+    element : <h1>Page Quiz Manager</h1>
+  }
 ]);
 
 const root = ReactDOM.createRoot(
@@ -29,6 +39,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <h1>Potentiel navbar</h1>
     <RouterProvider router={router} />
   </React.StrictMode>
 );

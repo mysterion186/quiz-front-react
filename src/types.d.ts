@@ -3,7 +3,7 @@ type Question = {
     position : number,
     text : string, 
     title : string, 
-    possiblesAnswers : {
+    possibleAnswers : {
         id? : number,
         isCorrect : boolean,
         text : string

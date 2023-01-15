@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import Question from "../types";
 
 const instance = axios.create({
 	baseURL: process.env.REACT_APP_API_URL
@@ -11,7 +12,7 @@ type type_headers = {
 
 export default {
 
-    async call(method: string, ressources: string, data: object | null, token : string | null){
+    async call(method: string, ressources: string, data: object | null  = null, token : string | null = null ){
         var headers : type_headers= {
             "Content-type" : "application/json",
         };
@@ -33,6 +34,10 @@ export default {
     getQuizInfo(){
         return this.call("get","quiz-info", null, null);
     },
+
+    getQuestionByPosition(position : string) {
+        return this.call("get","questions?position="+position);
+    }
 
 }
 

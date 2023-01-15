@@ -7,8 +7,8 @@ export default {
         return window.localStorage.getItem('playerName');
     },
 
-    saveTotalQuestions(totalQuestions:string):void{
-        window.localStorage.setItem('totalQuestions', totalQuestions);
+    saveTotalQuestions(totalQuestions:number):void{
+        window.localStorage.setItem('totalQuestions', totalQuestions.toString());
     },
     getTotalQuestions():string|null{
         return window.localStorage.getItem('totalQuestions');
@@ -19,5 +19,13 @@ export default {
     },
     getToken():string|null{
         return window.localStorage.getItem('token');
+    },
+
+    saveQuestionTotal(total:number):void{
+        window.localStorage.setItem('total',total.toString());
+    },
+    getTotal():string|null{
+        const total = window.localStorage.getItem('total');
+        return total===null ? null : total;
     }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import QuizApiService from '../services/QuizApiService';
+import ParticipationStorage from '../services/ParticipationStorage';
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 
@@ -10,6 +11,7 @@ function ScoreTable() {
             const response = await QuizApiService.getQuizInfo();
             setDate(response.data.scores);
             console.log(response);
+            ParticipationStorage.saveQuestionTotal(response.data.size)
             return response;
         }
         fetchData()

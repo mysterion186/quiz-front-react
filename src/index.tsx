@@ -4,6 +4,7 @@ import './index.css';
 import SaveName from './components/SaveName';
 import ScoreTable from './components/ScoreTable';
 import HomePage from './views/front/HomePage';
+import QuizManager from './views/front/QuizManager';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
     path : "/quiz",
-    element : <h1>Page Quiz Manager</h1>
+    element : <QuizManager />
   }
 ]);
 

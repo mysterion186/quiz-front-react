@@ -20,7 +20,7 @@ function QuizDisplay(props : Props) {
                 <div className="grid grid-cols-1 grid-flow-row  xl:grid-cols-2">
                     {
                         props.question.possibleAnswers.map((answer, index : number) => (
-                            <div key={answer.id} className="hover:bg-green-500 py-2 px-1 cursor-pointer" onClick={() => {props.setParentAnswer([...props.userAnswer, index])}} >
+                            <div key={answer.id} className="hover:bg-green-500 py-2 px-1 cursor-pointer" onClick={() => {props.setParentAnswer([...props.userAnswer, index + 1])}} >
                                 <p>{answer.text}</p>
                             </div>
                         ))

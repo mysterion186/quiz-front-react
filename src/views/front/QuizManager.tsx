@@ -14,18 +14,17 @@ function QuizManager(){
     const [question, setQuestion] = useState<Question | null>(null);
     const [currentPos, setCurrentPos] = useState<number>(1);
     const numberQuestionTotal:string = ParticipationStorage.getTotal() as string;
+    const [answerSize, setAnswerSize] = useState<number>(userAnswer.length);
     
     const loadQuestionByPosition = async () => {
-        console.log("dans load ");
         if (currentPos <= parseInt(numberQuestionTotal)) {
             const response = await QuizApiService.getQuestionByPosition(currentPos.toString());
-            console.log(response);
             if (response.status === 200) {
                 setQuestion(response.data);
-                console.log(question);
+                // console.log(question);
             }
             else {
-                console.log("La question demandée n'existe pas, passons à la question suivante ",response);
+                // console.log("La question demandée n'existe pas, passons à la question suivante ",response);
                 setCurrentPos(currentPos + 1);
             }
         }
@@ -39,9 +38,10 @@ function QuizManager(){
             await loadQuestionByPosition();
         }
         temp();
-        console.log("Depuis useEffect ",question);
-    }, []);
-    console.log("En dehors  ",question);
+        setCurrentPos( currentPos + 1 );
+        console.log("useEffect numéro 2, doit s'afficher s'il y a un changement dans userAnswers");
+    }, [userAnswer.length]);
+
     if (question) {
         return (
             <div className="flex justify-center items-center flex-col">

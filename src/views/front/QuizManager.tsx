@@ -46,7 +46,13 @@ function QuizManager(){
         return (
             <div className="flex justify-center items-center flex-col">
                 Welcome to the Quiz 
-                <QuizDisplay question={question as Question} total={numberQuestionTotal}/>
+                <QuizDisplay 
+                    question={question as Question} 
+                    total={numberQuestionTotal}
+                    setParentAnswer={setUserAnswer}
+                    userAnswer={userAnswer}
+                />
+                <button onClick={() => {console.log("depuis quiz manager ", userAnswer);}}>Display userAnswers</button>
             </div>
         )
       } else {

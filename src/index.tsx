@@ -7,7 +7,8 @@ import HomePage from './views/front/HomePage';
 import QuizManager from './views/front/QuizManager';
 import Login from './views/admin/Login';
 import Questions from './views/admin/Questions';
-
+import QuestionDetailed from './views/admin/QuestionDetailed';
+import EditPage from './views/admin/EditPage';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -44,6 +45,14 @@ const router = createBrowserRouter([
       {
         path:"questions",
         element : <Questions />
+      },
+      {
+        path:"questions/:position",
+        element : <QuestionDetailed />
+      },
+      {
+        path:"questions/edit/:position",
+        element : <EditPage />
       }
     ]
   },

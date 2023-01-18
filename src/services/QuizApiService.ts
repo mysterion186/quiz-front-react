@@ -50,5 +50,9 @@ export default {
         return this.call("post","login", data);
     },
 
+    deleteQuestion(id:string, token : string){
+        return this.call("delete","questions/"+id, null, token);
+    }
+
 }
 

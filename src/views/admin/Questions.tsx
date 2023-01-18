@@ -1,11 +1,11 @@
 import {useState, useEffect} from "react";
 import Question from "../../types";
 import QuizApiService from "../../services/QuizApiService";
-
+import { useNavigate } from "react-router-dom";
 
 function Questions () {
     const [questions, setQuestions] = useState<Question[] | null>(null);
-
+    const navigate = useNavigate();
     useEffect(() => {
         const getData = async () => {
             const response = await QuizApiService.getAllQuestions();
@@ -26,7 +26,7 @@ function Questions () {
                     </thead>
                     <tbody className="justify-center items-center overflow-y-auto" style={{height: "5px",width: "5px"}}>
                         {questions!.map((item, index) => (
-                            <tr key={index} className="hover:bg-green-400 items-center">
+                            <tr key={index} className="hover:bg-green-400 items-center cursor-pointer" onClick={() => {navigate("/admin/questions/"+item.position)}}>
                                 <td className="px-12 border-b-2 text-center hidden lg:block">{item.position}</td>
                                 <td className="px-12 border-b-2 text-center">{item.text}</td>
                             </tr>

@@ -18,8 +18,17 @@ code {
   monospace;
 }
 
+img{
+  width:400px;
+  height:200px;
+}
+
 @media (min-width: 768px) { 
   body {
     background-image : url(./assets/training-duo-cordes.jpg); 
+  }
+  img{
+    width:500px;
+    height:300px;
   }
  }

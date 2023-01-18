@@ -5,6 +5,9 @@ import SaveName from './components/SaveName';
 import ScoreTable from './components/ScoreTable';
 import HomePage from './views/front/HomePage';
 import QuizManager from './views/front/QuizManager';
+import Login from './views/admin/Login';
+import Questions from './views/admin/Questions';
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -32,7 +35,17 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <h1>Page admin</h1>
+    element: <HomePage />,
+    children: [
+      {
+        path: "",
+        element : <Login />
+      },
+      {
+        path:"questions",
+        element : <Questions />
+      }
+    ]
   },
   {
     path : "/quiz",

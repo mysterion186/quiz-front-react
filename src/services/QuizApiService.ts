@@ -44,7 +44,11 @@ export default {
 
     postParticipation(data: {playerName:string, answers:number[]}){
         return this.call("post","participations",data);
-    }
+    },
+
+    postLogin(data:{password : string}){
+        return this.call("post","login", data);
+    },
 
 }
 

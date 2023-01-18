@@ -37,6 +37,13 @@ export default {
 
     getQuestionByPosition(position : string) {
         return this.call("get","questions?position="+position);
+    },
+    getAllQuestions() {
+        return this.call("get","questions?position=all");
+    },
+
+    postParticipation(data: {playerName:string, answers:number[]}){
+        return this.call("post","participations",data);
     }
 
 }

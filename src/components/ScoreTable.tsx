@@ -34,7 +34,7 @@ function ScoreTable() {
                             <th className="px-12 border-b-2 ">Scores</th>
                         </tr>
                     </thead>
-                    <tbody className="justify-center items-center overflow-y-auto" style={{height: "5px",width: "5px", color:"green"}}>
+                    <tbody className="justify-center items-center overflow-y-auto" style={{height: "5px",width: "5px"}}>
                         {data.map((item, index) => (
                             <tr key={index} className="hover:bg-green-400 items-center">
                                 <td className="px-12 border-b-2">{item["playerName"]}</td>

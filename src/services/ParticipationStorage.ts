@@ -27,5 +27,28 @@ export default {
     getTotal():string|null{
         const total = window.localStorage.getItem('total');
         return total===null ? null : total;
+    },
+
+    saveParticipationScore(score : number):void{
+        window.localStorage.setItem('participationScore',score.toString()); 
+    },
+    getParticipationScore():string|null{
+        return window.localStorage.getItem('participationScore');
+    },
+
+    saveAnswersSummaries(answersSummaries : number[]){
+        window.localStorage.setItem("answersSummaries", answersSummaries.toString());
+    },
+    getAnswersSummaries():Array<[number, string]>|undefined{
+        const rawAnswers = window.localStorage.getItem("answersSummaries");
+        if (rawAnswers === null){
+            return;
+        }
+        const temp = rawAnswers.split(',');
+        var cleanAnswer: Array<[number, string]> = [];
+        for (let i = 0; i < temp.length - 1; i +=2 ) {
+            cleanAnswer.push([parseInt(temp[i]), temp[i + 1]]);
+        }
+        return cleanAnswer;
     }
 }

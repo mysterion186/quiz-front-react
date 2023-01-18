@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Question from '../../types';
 import ParticipationStorage from "../../services/ParticipationStorage";
 import QuizApiService from "../../services/QuizApiService";
@@ -14,20 +15,35 @@ function QuizManager(){
     const [question, setQuestion] = useState<Question | null>(null);
     const [currentPos, setCurrentPos] = useState<number>(1);
     const numberQuestionTotal:string = ParticipationStorage.getTotal() as string;
+
+    const navigate = useNavigate();
     
+    const endQuiz = async () => {
+        const playerName:string = ParticipationStorage.getPlayerName() as string;
+        const data = {
+            playerName : playerName,
+            answers : userAnswer
+        }
+        const response = await QuizApiService.postParticipation(data);
+        console.log(response);
+        ParticipationStorage.saveParticipationScore(response.data["score"]);
+        ParticipationStorage.saveAnswersSummaries(response.data["answersSummaries"]);
+    }
+
     const loadQuestionByPosition = async () => {
         if (currentPos <= parseInt(numberQuestionTotal)) {
             const response = await QuizApiService.getQuestionByPosition(currentPos.toString());
             if (response.status === 200) {
                 setQuestion(response.data);
-                // console.log(question);
             }
             else {
                 setCurrentPos(currentPos + 1);
             }
         }
         else{
-            console.log("Faut mettre fin au question mec !");
+            endQuiz();
+            navigate("/recap")
+            // console.log("Faut mettre fin au question mec !");
         }
     }
 

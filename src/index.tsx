@@ -9,6 +9,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Recap from './components/Recap';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
         path: "save-name",
         element: <SaveName />
       },
+      {
+        path: "recap",
+        element: <Recap />
+      }
     ],
   },
   {
@@ -31,7 +36,7 @@ const router = createBrowserRouter([
   },
   {
     path : "/quiz",
-    element : <QuizManager />
+    element : <QuizManager />,
   }
 ]);
 

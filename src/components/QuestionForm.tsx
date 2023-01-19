@@ -7,7 +7,7 @@ function QuestionForm (props : {questionId : number | null}){
     const [question, setQuestion] = useState<Question|null>(null);
     const [listAnswer, setListAnswer] = useState<boolean[]>([false,false,false,false]);
 
-    const [selected, setSelected] = useState<number>(0);
+    const [selected, setSelected] = useState<number>(-1);
 
 
     useEffect(() => {
@@ -18,7 +18,24 @@ function QuestionForm (props : {questionId : number | null}){
                 text : '',
                 title : '',
                 image : '',
-                possibleAnswers : [],
+                possibleAnswers : [
+                    {
+                        text : '',
+                        isCorrect : false
+                    },
+                    {
+                        text : '',
+                        isCorrect : false
+                    },
+                    {
+                        text : '',
+                        isCorrect : false
+                    },
+                    {
+                        text : '',
+                        isCorrect : false
+                    },
+                ],
             }
             setQuestion(cleanQuestion);
         }
@@ -164,9 +181,14 @@ function QuestionForm (props : {questionId : number | null}){
                         onClick={() => {
                             console.log(question);
                             const token = ParticipationStorage.getToken() as string;
-                            if (question.id !== undefined) {
-                                const response = QuizApiService.updateQuestion(question.id.toString(), question, token);
-                                console.log(response);
+                            if (props.questionId !== null) {
+                                if (question.id !== undefined) {
+                                    const response = QuizApiService.updateQuestion(question.id.toString(), question, token);
+                                    console.log(response);
+                                }
+                            }
+                            else {
+                                const reponse = QuizApiService.postQuestion(question,token);
                             }
                         }}
                     >

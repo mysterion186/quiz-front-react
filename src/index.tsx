@@ -9,6 +9,7 @@ import Login from './views/admin/Login';
 import Questions from './views/admin/Questions';
 import QuestionDetailed from './views/admin/QuestionDetailed';
 import EditPage from './views/admin/EditPage';
+import AddQuestion from './views/admin/AddQuestion';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
       },
       {
         path:"questions/add",
-        element : <h1>Page ajout d'une question ! </h1>
+        element : <AddQuestion />
       }
     ]
   },

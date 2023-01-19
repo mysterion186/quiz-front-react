@@ -59,6 +59,10 @@ export default {
 
     updateQuestion(id:string, data:Question, token : string){
         return this.call("put","questions/"+id, data, token);
+    },
+
+    postQuestion(data:Question, token:string){
+        return this.call("post","questions", data, token);
     }
 
 }

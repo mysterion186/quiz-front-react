@@ -2,7 +2,7 @@ import Question from "../../types";
 import { useEffect, useState } from "react";
 import QuizApiService from "../../services/QuizApiService";
 import ParticipationStorage from "../../services/ParticipationStorage";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 function QuestionDetailed() {
     const [question, setQuestion] = useState<Question | null>(null);
@@ -59,9 +59,11 @@ function QuestionDetailed() {
                         <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" onClick={handleDelete}>
                             Supprimer la question
                         </button>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                            Editer la question
-                        </button>
+                        <Link to={`edit`}>
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                Editer la question
+                            </button>
+                        </Link>
                 </div>
             </div>
         )

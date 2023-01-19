@@ -51,8 +51,12 @@ const router = createBrowserRouter([
         element : <QuestionDetailed />
       },
       {
-        path:"questions/edit/:position",
+        path:"questions/:position/edit",
         element : <EditPage />
+      },
+      {
+        path:"questions/add",
+        element : <h1>Page ajout d'une question ! </h1>
       }
     ]
   },

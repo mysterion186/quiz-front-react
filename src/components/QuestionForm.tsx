@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import Question from '../types';
 import QuizApiService from '../services/QuizApiService';
 import ParticipationStorage from '../services/ParticipationStorage';
-
+import { useNavigate } from 'react-router-dom';
 function QuestionForm (props : {questionId : number | null}){
     const [question, setQuestion] = useState<Question|null>(null);
     const [listAnswer, setListAnswer] = useState<boolean[]>([false,false,false,false]);
-
+    const navigate = useNavigate();
     const [selected, setSelected] = useState<number>(-1);
 
 
@@ -128,7 +128,12 @@ function QuestionForm (props : {questionId : number | null}){
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
                             <input onChange={() => {handleChange(window.event)} } type="radio" checked={selected ===0} name="correctAnswer" value="0" id="flexCheckDefault" />
-                            <input value={question.possibleAnswers[0].text} onChange={() => {handleAnswerUpdate(window.event, 0)} }  placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
+                            <textarea 
+                                value={question.possibleAnswers[0].text} 
+                                onChange={() => {handleAnswerUpdate(window.event, 0)} }  
+                                placeholder="Réponse 1" 
+                                className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" 
+                                aria-label="Full name" required ></textarea>
                         </div>
 
                         <label className="mt-5 block uppercase tracking-wide text-white-700 text-xs font-bold mb-2">
@@ -136,12 +141,12 @@ function QuestionForm (props : {questionId : number | null}){
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
                             <input onChange={() => {handleChange(window.event)} } type="radio" checked={selected === 1} name="correctAnswer" value="1" id="flexCheckDefault" />
-                            <input 
+                            <textarea 
                                 value={question.possibleAnswers[1].text} 
                                 onChange={() => {handleAnswerUpdate(window.event, 1)} } 
                                 placeholder="Réponse 2" 
                                 className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" 
-                                type="text" aria-label="Full name" required />
+                                aria-label="Full name" required></textarea>
                         </div>
 
                         <label className="mt-5 block uppercase tracking-wide text-white-700 text-xs font-bold mb-2">
@@ -149,7 +154,12 @@ function QuestionForm (props : {questionId : number | null}){
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
                             <input onChange={() => {handleChange(window.event)}} type="radio" checked={selected === 2} name="correctAnswer" value="2" id="flexCheckDefault" />
-                            <input value={question.possibleAnswers[2].text} onChange={() => {handleAnswerUpdate(window.event, 2)} } placeholder="Réponse 3" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
+                            <textarea 
+                                value={question.possibleAnswers[2].text} 
+                                onChange={() => {handleAnswerUpdate(window.event, 2)} } 
+                                placeholder="Réponse 3" 
+                                className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" 
+                                aria-label="Full name" required ></textarea>
                         </div>
 
                         <label className="mt-5 block uppercase tracking-wide text-white-700 text-xs font-bold mb-2">
@@ -157,7 +167,12 @@ function QuestionForm (props : {questionId : number | null}){
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
                             <input onChange={() => {handleChange(window.event)}} type="radio" checked={selected === 3} name="correctAnswer" value="3" id="flexCheckDefault" />
-                            <input value={question.possibleAnswers[3].text} onChange={() => {handleAnswerUpdate(window.event, 3)} } placeholder="Réponse 4" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
+                            <textarea 
+                                value={question.possibleAnswers[3].text} 
+                                onChange={() => {handleAnswerUpdate(window.event, 3)} } 
+                                placeholder="Réponse 4" 
+                                className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" 
+                                aria-label="Full name" required ></textarea>
                         </div>
                     </div>
                     <div className='mt-10'>
@@ -178,25 +193,28 @@ function QuestionForm (props : {questionId : number | null}){
                 <div className='flex display-center items-center flex-col'>
                     <button 
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" 
-                        onClick={() => {
+                        onClick={async () => {
                             console.log(question);
                             const token = ParticipationStorage.getToken() as string;
                             if (props.questionId !== null) {
                                 if (question.id !== undefined) {
-                                    const response = QuizApiService.updateQuestion(question.id.toString(), question, token);
-                                    console.log(response);
+                                    const response = await QuizApiService.updateQuestion(question.id.toString(), question, token);
+                                    if (response.status === 200) {
+                                        navigate("/admin/questions")
+                                    }
                                 }
                             }
                             else {
-                                const reponse = QuizApiService.postQuestion(question,token);
+                                const response = await QuizApiService.postQuestion(question,token);
+                                if (response.status === 200) {
+                                    navigate("/admin/questions");
+                                }
                             }
                         }}
                     >
                         Confirmer la modification
                     </button>
-                    <button 
-                        className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-full" 
-                    >
+                    <button className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => { navigate("/admin/questions")}}>
                         Annuler la modification
                     </button>
                 </div>

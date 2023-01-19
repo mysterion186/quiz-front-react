@@ -72,7 +72,6 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <h1>Potentiel navbar</h1>
     <RouterProvider router={router} />
   </React.StrictMode>
 );

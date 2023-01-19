@@ -5,9 +5,9 @@ import QuizApiService from '../services/QuizApiService';
 
 function QuestionForm (props : {questionId : number | null}){
     const [question, setQuestion] = useState<Question|null>(null);
-    const [listAnswer, setListAnswer] = useState<boolean[]>([false,true,false,false]);
+    const [listAnswer, setListAnswer] = useState<boolean[]>([false,false,false,false]);
 
-    const [selected, setSelected] = useState<number>(1);
+    const [selected, setSelected] = useState<number>(0);
 
 
     useEffect(() => {
@@ -28,6 +28,16 @@ function QuestionForm (props : {questionId : number | null}){
                 if (response.status === 200) {
                     cleanQuestion = response.data;
                     setQuestion(cleanQuestion);
+                    const Answers = [];
+                    for (let i = 0; i < cleanQuestion.possibleAnswers.length; i++) {
+                        if (cleanQuestion.possibleAnswers[i].isCorrect){
+                            Answers.push(true);
+                            setSelected(i);
+                        }
+                        else Answers.push(false);
+                    }
+                    console.log(Answers);
+                    setListAnswer(Answers);
                 }
             }
             getData();

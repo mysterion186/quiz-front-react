@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import Question from "../../types";
 import QuizApiService from "../../services/QuizApiService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Questions () {
     const [questions, setQuestions] = useState<Question[] | null>(null);
@@ -17,6 +17,14 @@ function Questions () {
     if (questions){
         return (
             <div className="flex justify-center items-center flex-col">
+                <div className="flex justify-center items-center flex-col lg:flex-row">
+                    <button className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-full">
+                        Supprimer les participations
+                    </button>
+                    <button className="bg-rose-500 mt-3 lg:mt-0 lg:ml-3 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-full">
+                        Supprimer les questions
+                    </button>
+                </div>
                 <table className="table-auto border-separate mt-16 max-h-16">
                     <thead>
                         <tr className='items-center '>
@@ -34,6 +42,11 @@ function Questions () {
     
                     </tbody>
                 </table>
+                <Link to="add">
+                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
+                            Ajouter une question
+                        </button>
+                </Link>
             </div>
         )
     }

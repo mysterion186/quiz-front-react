@@ -55,6 +55,10 @@ export default {
 
     deleteQuestion(id:string, token : string){
         return this.call("delete","questions/"+id, null, token);
+    },
+
+    updateQuestion(id:string, data:Question, token : string){
+        return this.call("put","questions/"+id, data, token);
     }
 
 }

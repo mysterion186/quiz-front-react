@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Question from '../types';
 import QuizApiService from '../services/QuizApiService';
-
+import ParticipationStorage from '../services/ParticipationStorage';
 
 function QuestionForm (props : {questionId : number | null}){
     const [question, setQuestion] = useState<Question|null>(null);
@@ -58,6 +58,28 @@ function QuestionForm (props : {questionId : number | null}){
         console.log(question!.possibleAnswers);
     }
 
+    function convertToBase64(event:any) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            if (reader.result !== null && typeof(reader.result)==="string" )
+            setQuestion({...question, image: reader.result } as Question);
+        };
+        reader.onerror = (error) => {
+            console.log('Error: ', error);
+        };
+    };
+
+    const handleAnswerUpdate = (event : any,index:number) => {
+        setQuestion(() => {
+            const prev = question!;
+            const newPossibleAnswers = [...prev.possibleAnswers];
+            newPossibleAnswers[index] = { ...newPossibleAnswers[index], text: event.target.value }
+            return { ...prev, possibleAnswers: newPossibleAnswers };
+        });
+    }
+
     if (question){
         return (
             <div className='flex justify-center items-center flex-col'>
@@ -89,7 +111,7 @@ function QuestionForm (props : {questionId : number | null}){
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
                             <input onChange={() => {handleChange(window.event)} } type="radio" checked={selected ===0} name="correctAnswer" value="0" id="flexCheckDefault" />
-                            <input value={question.possibleAnswers[0].text} onChange={(event) =>{setQuestion({...question, text: event.target.value})}} placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
+                            <input value={question.possibleAnswers[0].text} onChange={() => {handleAnswerUpdate(window.event, 0)} }  placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
                         </div>
 
                         <label className="mt-5 block uppercase tracking-wide text-white-700 text-xs font-bold mb-2">
@@ -97,7 +119,12 @@ function QuestionForm (props : {questionId : number | null}){
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
                             <input onChange={() => {handleChange(window.event)} } type="radio" checked={selected === 1} name="correctAnswer" value="1" id="flexCheckDefault" />
-                            <input value={question.possibleAnswers[1].text} onChange={(event) =>{setQuestion({...question, text: event.target.value})}} placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
+                            <input 
+                                value={question.possibleAnswers[1].text} 
+                                onChange={() => {handleAnswerUpdate(window.event, 1)} } 
+                                placeholder="Réponse 2" 
+                                className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" 
+                                type="text" aria-label="Full name" required />
                         </div>
 
                         <label className="mt-5 block uppercase tracking-wide text-white-700 text-xs font-bold mb-2">
@@ -105,7 +132,7 @@ function QuestionForm (props : {questionId : number | null}){
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
                             <input onChange={() => {handleChange(window.event)}} type="radio" checked={selected === 2} name="correctAnswer" value="2" id="flexCheckDefault" />
-                            <input value={question.possibleAnswers[2].text} onChange={(event) =>{setQuestion({...question, text: event.target.value})}} placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
+                            <input value={question.possibleAnswers[2].text} onChange={() => {handleAnswerUpdate(window.event, 2)} } placeholder="Réponse 3" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
                         </div>
 
                         <label className="mt-5 block uppercase tracking-wide text-white-700 text-xs font-bold mb-2">
@@ -113,18 +140,44 @@ function QuestionForm (props : {questionId : number | null}){
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
                             <input onChange={() => {handleChange(window.event)}} type="radio" checked={selected === 3} name="correctAnswer" value="3" id="flexCheckDefault" />
-                            <input value={question.possibleAnswers[3].text} onChange={(event) =>{setQuestion({...question, text: event.target.value})}} placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
+                            <input value={question.possibleAnswers[3].text} onChange={() => {handleAnswerUpdate(window.event, 3)} } placeholder="Réponse 4" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
                         </div>
-
-
-
                     </div>
-
-
+                    <div className='mt-10'>
+                        <label className="form-label" >Image pour la question : </label>
+                        <div>
+                            <input
+                                type="file"
+                                accept="image/jpeg/*"
+                                onChange={convertToBase64}
+                            />
+                            {
+                                question.image &&
+                                <img src={question.image}></img>
+                            }
+                        </div>
+                    </div>
                 </form>
-                <button className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => {console.log(question); console.log(listAnswer)}}>
-                    Test formulaire
-                </button>
+                <div className='flex display-center items-center flex-col'>
+                    <button 
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" 
+                        onClick={() => {
+                            console.log(question);
+                            const token = ParticipationStorage.getToken() as string;
+                            if (question.id !== undefined) {
+                                const response = QuizApiService.updateQuestion(question.id.toString(), question, token);
+                                console.log(response);
+                            }
+                        }}
+                    >
+                        Confirmer la modification
+                    </button>
+                    <button 
+                        className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-full" 
+                    >
+                        Annuler la modification
+                    </button>
+                </div>
             </div>
         )
     }

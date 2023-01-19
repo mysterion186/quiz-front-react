@@ -5,6 +5,10 @@ import QuizApiService from '../services/QuizApiService';
 
 function QuestionForm (props : {questionId : number | null}){
     const [question, setQuestion] = useState<Question|null>(null);
+    const [listAnswer, setListAnswer] = useState<boolean[]>([false,true,false,false]);
+
+    const [selected, setSelected] = useState<number>(1);
+
 
     useEffect(() => {
         var cleanQuestion:Question;
@@ -31,17 +35,18 @@ function QuestionForm (props : {questionId : number | null}){
         
     }, []);
 
-    const handleChange = (event:any,pos:number) => {
-        for (let i =0; i < question!.possibleAnswers.length; i++) {
-            if (i === pos - 1) continue;
-            question!.possibleAnswers[i].isCorrect = false;
-            console.log(i,question!.possibleAnswers[i]);
+    const handleChange = (event:any) => {
+        const rawSelected = parseInt(event.target.value);
+        setSelected(rawSelected);
+        for (let i = 0; i < question!.possibleAnswers.length; i++) {
+            if (i === rawSelected) question!.possibleAnswers[rawSelected].isCorrect = true;
+            else {
+                question!.possibleAnswers[i].isCorrect = false;
+            }
         }
-        question!.possibleAnswers[pos - 1].isCorrect = true;
         setQuestion(question);
-        console.log(pos);
-        console.log("Checkbox checked or not ? ",event.target.checked);
-    };
+        console.log(question!.possibleAnswers);
+    }
 
     if (question){
         return (
@@ -73,7 +78,7 @@ function QuestionForm (props : {questionId : number | null}){
                             Réponse 1
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
-                            <input onChange={() => {handleChange(window.event,1)} } type="radio" checked={question!.possibleAnswers[0].isCorrect} name="correctAnswer" value="" id="flexCheckDefault" />
+                            <input onChange={() => {handleChange(window.event)} } type="radio" checked={selected ===0} name="correctAnswer" value="0" id="flexCheckDefault" />
                             <input value={question.possibleAnswers[0].text} onChange={(event) =>{setQuestion({...question, text: event.target.value})}} placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
                         </div>
 
@@ -81,7 +86,7 @@ function QuestionForm (props : {questionId : number | null}){
                             Réponse 2
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
-                            <input onChange={() => {console.log("clicked ");handleChange(window.event,2)} } type="radio" checked={question!.possibleAnswers[1].isCorrect} name="correctAnswer" id="flexCheckDefault" />
+                            <input onChange={() => {handleChange(window.event)} } type="radio" checked={selected === 1} name="correctAnswer" value="1" id="flexCheckDefault" />
                             <input value={question.possibleAnswers[1].text} onChange={(event) =>{setQuestion({...question, text: event.target.value})}} placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
                         </div>
 
@@ -89,7 +94,7 @@ function QuestionForm (props : {questionId : number | null}){
                             Réponse 3
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
-                            <input onChange={() => {handleChange(window.event, 3)}} type="radio" checked={question!.possibleAnswers[2].isCorrect} name="correctAnswer" value="" id="flexCheckDefault" />
+                            <input onChange={() => {handleChange(window.event)}} type="radio" checked={selected === 2} name="correctAnswer" value="2" id="flexCheckDefault" />
                             <input value={question.possibleAnswers[2].text} onChange={(event) =>{setQuestion({...question, text: event.target.value})}} placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
                         </div>
 
@@ -97,7 +102,7 @@ function QuestionForm (props : {questionId : number | null}){
                             Réponse 4
                         </label>
                         <div className={`flex items-center border-b py-2 px-2 ${false?"border-red-500":"border-teal-500"} `}>
-                            <input onChange={() => {handleChange(window.event, 4)}} type="radio" checked={question!.possibleAnswers[3].isCorrect} name="correctAnswer" value="" id="flexCheckDefault" />
+                            <input onChange={() => {handleChange(window.event)}} type="radio" checked={selected === 3} name="correctAnswer" value="3" id="flexCheckDefault" />
                             <input value={question.possibleAnswers[3].text} onChange={(event) =>{setQuestion({...question, text: event.target.value})}} placeholder="Réponse 1" className="appearance-none bg-transparent border-none w-full text-white-700 text-xl mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" aria-label="Full name" required />
                         </div>
 
@@ -107,7 +112,7 @@ function QuestionForm (props : {questionId : number | null}){
 
 
                 </form>
-                <button className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => {console.log(question)}}>
+                <button className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => {console.log(question); console.log(listAnswer)}}>
                     Test formulaire
                 </button>
             </div>

@@ -4,6 +4,7 @@ import Question from '../../types';
 import ParticipationStorage from "../../services/ParticipationStorage";
 import QuizApiService from "../../services/QuizApiService";
 import QuizDisplay from "../../components/QuizDisplay";
+import Navbar from "../../components/Navbar";
 
 type props = {
     question : Question, 
@@ -58,7 +59,7 @@ function QuizManager(){
     if (question) {
         return (
             <div className="flex justify-center items-center flex-col">
-                Welcome to the Quiz 
+                <Navbar /> 
                 <QuizDisplay 
                     question={question as Question} 
                     total={numberQuestionTotal}
